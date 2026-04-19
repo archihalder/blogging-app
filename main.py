@@ -1,7 +1,18 @@
 from fastapi import FastAPI, Request  # Jinja2 templates require Request parameter
+from fastapi.staticfiles import StaticFiles
+# required for using static files like css or icons
+
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+# we need to mount the static files on to our fastapi app
+# this takes three parameters
+#   1. takes the url path where static files are stored
+#   2. StaticFiles instance that points to the static files directory
+#   3. we use name parameter to reference "static" in our templates
+#       this means we can use "/static/css/main.css" in our templates
 
 templates = Jinja2Templates(directory="templates")
 # looks for template files in our templates directory
