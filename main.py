@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request  # Jinja2 templates require Request parameter
+from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.staticfiles import StaticFiles
 # required for using static files like css or icons
 
@@ -41,3 +41,16 @@ def home(request: Request):
 @app.get("/api/posts")
 def get_posts():
     return posts
+
+
+# {post_id} tells FastAPI that this is a path parameter and part of the url
+# it is a variable and it should be captured and passed to the method.
+# The type int for post_id in the method is important as this helps
+# FastAPI to automatically validate the input
+@app.get("/api/posts/{post_id}")
+def get_post(post_id: int):
+    for post in posts:
+        if post.get("id") == post_id:
+            return post
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Post not found")
