@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if title %}
+        FastAPI Blog - {{ title }}
+        {% else %}
+        Blogging App
+        {% endif %}
+    </title>
+</head>
+
+<body>
+    <!-- this defines a section called content that the child templates can override -->
+    <!-- we can have multiple blocks with different names -->
+    {% block content %}
+
+    {% endblock content %}
+</body>
+
+</html>
