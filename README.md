@@ -11,6 +11,27 @@ A full-featured blogging REST API built with **FastAPI** following along with th
 
 - **Python** + **uv** (package manager)
 - **FastAPI**
+- **Jinja2** — HTML templating
+
+---
+
+## Project Structure
+
+```
+blogging-app/
+├── static/
+│   ├── css/
+│   ├── icons/
+│   ├── js/
+│   └── profile_pics/
+├── templates/
+│   ├── layout.html
+│   └── home.html
+├── notes/
+├── main.py
+├── pyproject.toml
+└── uv.lock
+```
 
 ---
 
