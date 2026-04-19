@@ -7,12 +7,6 @@ from fastapi.templating import Jinja2Templates
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-# we need to mount the static files on to our fastapi app
-# this takes three parameters
-#   1. takes the url path where static files are stored
-#   2. StaticFiles instance that points to the static files directory
-#   3. we use name parameter to reference "static" in our templates
-#       this means we can use "/static/css/main.css" in our templates
 
 templates = Jinja2Templates(directory="templates")
 # looks for template files in our templates directory
@@ -35,24 +29,13 @@ posts: list[dict] = [
 ]
 
 
-@app.get("/", include_in_schema=False)
-@app.get("/posts", include_in_schema=False)
+# the hrefs url_for('home') is looking for this name
+@app.get("/", include_in_schema=False, name="home")
+@app.get("/posts", include_in_schema=False, name="posts")
 def home(request: Request):
     return templates.TemplateResponse(
         request, "home.html", {"posts": posts, "title": "Blog Home"}
     )
-
-
-# templates is a Jinja2Templates instance
-# calling TemplateResponse does three things:
-#   1. finds home.html inside the templates directory
-#   2. processes any jinja2 syntax in the html file
-#   3. returns a full html response to the browser
-# the third parameter is the context, so we gave the template
-# access to the list of dictionaries "posts"
-
-# the request object is passed because Jinja2Templates needs it
-# to build things like request.url_for() inside the template
 
 
 @app.get("/api/posts")
