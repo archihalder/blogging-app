@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% if title %}
+        FastAPI Blog - {{ title }}
+        {% else %}
+        Blogging App
+        {% endif %}
+    </title>
+</head>
+
+<body>
+    <h1>Home Page</h1>
+    {% for post in posts %}
+    <h2>{{ post.title }}</h2> <!-- jinja2 allows us to access keys of a json using dot notation -->
+    <p>{{ post.content }}</p>
+    {% endfor %}
+</body>
+
+</html>

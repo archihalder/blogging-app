@@ -1,7 +1,10 @@
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi import FastAPI, Request  # Jinja2 templates require Request parameter
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
+
+templates = Jinja2Templates(directory="templates")
+# looks for template files in our templates directory
 
 posts: list[dict] = [
     {
@@ -21,10 +24,24 @@ posts: list[dict] = [
 ]
 
 
-@app.get("/", response_class=HTMLResponse, include_in_schema=False)
-@app.get("/posts", response_class=HTMLResponse, include_in_schema=False)
-def home():
-    return f"<h1>{posts[0]['title']}</h1>"
+@app.get("/", include_in_schema=False)
+@app.get("/posts", include_in_schema=False)
+def home(request: Request):
+    return templates.TemplateResponse(
+        request, "home.html", {"posts": posts, "title": "Blog Home"}
+    )
+
+
+# templates is a Jinja2Templates instance
+# calling TemplateResponse does three things:
+#   1. finds home.html inside the templates directory
+#   2. processes any jinja2 syntax in the html file
+#   3. returns a full html response to the browser
+# the third parameter is the context, so we gave the template
+# access to the list of dictionaries "posts"
+
+# the request object is passed because Jinja2Templates needs it
+# to build things like request.url_for() inside the template
 
 
 @app.get("/api/posts")
